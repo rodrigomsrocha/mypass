@@ -1,12 +1,12 @@
-import { Header } from "@/components/Header";
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode, useEffect } from "react";
 import { NextPage } from "next";
-import { onIdTokenChanged } from "firebase/auth";
-import { useAuthStore } from "@/context/authContext";
-import { auth } from "@/lib/firebase";
+import { onAuthStateChanged, onIdTokenChanged } from "firebase/auth";
+import { FormattedUser, useAuthStore } from "@/context/authContext";
+import { auth, db } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,14 +26,17 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   }));
 
   useEffect(() => {
-    const subscriber = onIdTokenChanged(auth, async (user) => {
+    const subscriber = onAuthStateChanged(auth, async (user) => {
       if (!user) {
         updateUser(null);
         updateLoading(false);
         return;
       } else {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+
         updateLoading(true);
-        updateUser(user);
+        updateUser(docSnap.data() as FormattedUser);
         updateLoading(false);
       }
     });

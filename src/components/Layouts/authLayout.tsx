@@ -27,7 +27,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
             : "Welcome back sign in"}{" "}
           and keep your passwords <span className="text-violet-600">safe</span>.
         </h1>
-        <Image src="/hero.svg" alt="hero" width={500} height={500} />
+        <Image priority src="/hero.svg" alt="hero" width={500} height={500} />
       </div>
       <div className="flex flex-col items-center justify-center w-1/3 px-4">
         <div className="w-2/3">{children}</div>
