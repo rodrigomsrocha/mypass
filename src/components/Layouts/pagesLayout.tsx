@@ -5,7 +5,7 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-export function Layout({ children }: LayoutProps) {
+export function PagesLayout({ children }: LayoutProps) {
   return (
     <div className="max-w-[1580px] px-5 mx-auto">
       <Header />

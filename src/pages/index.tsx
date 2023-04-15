@@ -4,7 +4,7 @@ import { Sidebar } from "@/components/Sidebar";
 import * as Accordion from "@radix-ui/react-accordion";
 import { NextPageWithLayout } from "./_app";
 import { ReactElement } from "react";
-import { Layout } from "@/components/Layout";
+import { PagesLayout } from "@/components/Layouts/pagesLayout";
 
 const Index: NextPageWithLayout = () => {
   return (
@@ -53,7 +53,7 @@ const Index: NextPageWithLayout = () => {
 };
 
 Index.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+  return <PagesLayout>{page}</PagesLayout>;
 };
 
 export default Index;
