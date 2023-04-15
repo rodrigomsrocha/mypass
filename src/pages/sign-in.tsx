@@ -1,15 +1,26 @@
 import AuthLayout from "@/components/Layouts/authLayout";
+import { useAuthStore } from "@/context/authContext";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { ArrowRight, GoogleLogo } from "phosphor-react";
 import { ReactElement } from "react";
 
 const SignIn = () => {
+  const authWithGoogle = useAuthStore((state) => state.authWithGoogle);
+  const router = useRouter();
+
   return (
     <>
       <div>
         <h1 className="text-2xl">Sign in</h1>
         <span className="text-zinc-600 mb-8 block">be safe</span>
-        <button className="border border-zinc-800 rounded-md flex items-center justify-center gap-4 py-2 w-full mb-4">
+        <button
+          onClick={async () => {
+            await authWithGoogle();
+            router.push("/");
+          }}
+          className="border border-zinc-800 rounded-md flex items-center justify-center gap-4 py-2 w-full mb-4"
+        >
           <GoogleLogo size={24} weight="bold" /> Sign in with Google
         </button>
       </div>
