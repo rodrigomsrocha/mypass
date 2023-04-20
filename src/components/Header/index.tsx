@@ -1,13 +1,11 @@
-import { useAuthStore } from "@/context/authContext";
+import { useAuthContext } from "@/context/authContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { CaretDown } from "phosphor-react";
-import { Loader } from "../Loader";
 
 export function Header() {
-  const user = useAuthStore((state) => state.user);
-  const signOut = useAuthStore((state) => state.signOut);
+  const { user, signUserOut } = useAuthContext();
   const { pathname } = useRouter();
 
   return (
@@ -55,7 +53,7 @@ export function Header() {
         <button type="button">
           <CaretDown size={18} weight="bold" />
         </button>
-        <button onClick={signOut}>signout</button>
+        <button onClick={signUserOut}>signout</button>
       </div>
     </header>
   );

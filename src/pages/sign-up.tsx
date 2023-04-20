@@ -1,31 +1,27 @@
 import AuthLayout from "@/components/Layouts/authLayout";
 import { SignUpForm } from "@/components/SignUpForm";
-import { useAuthStore } from "@/context/authContext";
+import { useAuthContext } from "@/context/authContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ArrowRight, GoogleLogo } from "phosphor-react";
-import { ReactElement } from "react";
+import { GoogleLogo } from "phosphor-react";
+import { useEffect } from "react";
 
-const SignUp = () => {
-  const { authWithGoogle } = useAuthStore((state) => {
-    return {
-      authWithGoogle: state.authWithGoogle,
-      user: state.user,
-    };
-  });
+export default function SignUp() {
+  const { authWithGoogle, user, loading } = useAuthContext();
   const router = useRouter();
 
+  useEffect(() => {
+    if (user && !loading) router.push("/");
+  });
+
   return (
-    <>
+    <AuthLayout>
       <div>
         <h1 className="text-2xl">Sign up</h1>
         <span className="text-zinc-600 mb-8 block">be safe</span>
         <button
           className="border border-zinc-800 rounded-md flex items-center justify-center gap-4 py-2 w-full mb-4"
-          onClick={async () => {
-            await authWithGoogle();
-            router.push("/");
-          }}
+          onClick={authWithGoogle}
         >
           <GoogleLogo size={24} weight="bold" /> Sign up with Google
         </button>
@@ -40,12 +36,6 @@ const SignUp = () => {
           Sing in
         </Link>
       </span>
-    </>
+    </AuthLayout>
   );
-};
-
-SignUp.getLayout = function getLayout(page: ReactElement) {
-  return <AuthLayout>{page}</AuthLayout>;
-};
-
-export default SignUp;
+}

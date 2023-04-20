@@ -1,13 +1,10 @@
-import { useAuthStore } from "@/context/authContext";
+import { useAuthContext } from "@/context/authContext";
 import { ArrowRight } from "phosphor-react";
 import { FormEvent, useState } from "react";
 import { Loader } from "../Loader";
 
 export function LoginUserForm() {
-  const { loginUser, loading } = useAuthStore((state) => ({
-    loginUser: state.loginUser,
-    loading: state.loading,
-  }));
+  const { loginUser, loading } = useAuthContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,6 +12,7 @@ export function LoginUserForm() {
     e.preventDefault();
     await loginUser({ email, password });
   };
+
   return (
     <form
       onSubmit={handleLoginUser}

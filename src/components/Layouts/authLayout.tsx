@@ -1,22 +1,13 @@
-import { ReactNode, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useAuthStore } from "@/context/authContext";
+import { ReactNode } from "react";
 
 interface AuthLayoutProps {
   children: ReactNode;
 }
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
-  const { user, loading } = useAuthStore((state) => ({
-    user: state.user,
-    loading: state.loading,
-  }));
   const router = useRouter();
-
-  useEffect(() => {
-    if (user && !loading) router.push("/");
-  }, [user, loading, router]);
 
   return (
     <div className="flex min-h-screen">

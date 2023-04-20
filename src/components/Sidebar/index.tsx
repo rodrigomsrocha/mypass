@@ -1,14 +1,17 @@
+import { useCategoriesContext } from "@/context/categoriesContext";
 import * as Accordion from "@radix-ui/react-accordion";
-import { Plus } from "phosphor-react";
+import { CreateNewCategoryModal } from "../CreateNewCategoryModal";
 
-const categories = [
-  { title: "Social media", quantity: 3 },
-  { title: "Streaming", quantity: 3 },
-  { title: "Money", quantity: 2 },
-  { title: "Games", quantity: 2 },
-];
+interface SidebarProps {
+  categories: {
+    title: string;
+    quantity: number;
+  }[];
+}
 
-export function Sidebar() {
+export function Sidebar({ categories }: SidebarProps) {
+  const { updateCurrentCategory } = useCategoriesContext();
+
   return (
     <aside className="w-72 p-8">
       <Accordion.Root collapsible type="single" defaultValue="item-1">
@@ -17,29 +20,27 @@ export function Sidebar() {
             <Accordion.Trigger className="accordion-trigger">
               categories
             </Accordion.Trigger>
-            <button
-              className="w-5 h-5 flex items-center justify-center transition-colors rounded-md hover:bg-zinc-700"
-              type="button"
-            >
-              <Plus size={14} weight="bold" />
-            </button>
+            <CreateNewCategoryModal />
           </Accordion.Header>
           <Accordion.Content>
-            <ul className="pl-4 mt-8 flex flex-col gap-4 transition-all">
-              {categories.map((category) => {
-                return (
-                  <li
-                    className="flex justify-between items-center"
-                    key={category.title}
-                  >
-                    <span>{category.title}</span>
-                    <div className="bg-zinc-700 w-5 h-5 flex items-center justify-center rounded-md text-sm">
-                      {category.quantity}
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+            {categories.length !== 0 && (
+              <ul className="pl-4 mt-8 flex flex-col gap-4 transition-all">
+                {categories.map((category) => {
+                  return (
+                    <li
+                      onClick={() => updateCurrentCategory(category.title)}
+                      className="flex justify-between items-center"
+                      key={category.title}
+                    >
+                      <span>{category.title}</span>
+                      <div className="bg-zinc-700 w-5 h-5 flex items-center justify-center rounded-md text-sm">
+                        {category.quantity}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </Accordion.Content>
         </Accordion.Item>
       </Accordion.Root>

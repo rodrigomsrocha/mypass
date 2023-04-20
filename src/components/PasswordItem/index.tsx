@@ -1,18 +1,26 @@
+import { calculatePasswordStrength } from "@/utils/calculatePasswordStrenght";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ArrowElbowRight, CopySimple } from "phosphor-react";
 import { useState } from "react";
 import { StrenghtBar } from "../StrenghtBar";
 import { PasswordItemHeader } from "./PasswordItemHeader";
-import { calculatePasswordStrength } from "@/utils/calculatePasswordStrenght";
 
 interface PasswordItemProps {
   item: string;
+  password: {
+    platform_img: string;
+    platform: string;
+    email: string;
+    password: string;
+    username?: string;
+    website: string;
+  };
 }
 
-export function PasswordItem({ item }: PasswordItemProps) {
+export function PasswordItem({ item, password }: PasswordItemProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [copyButtonColor, setCopyButtonColor] = useState("text-violet-600");
-  const passwordStrength = calculatePasswordStrength("123456");
+  const passwordStrength = calculatePasswordStrength(password.password);
 
   const handleCopyPassword = () => {
     navigator.clipboard
@@ -37,18 +45,22 @@ export function PasswordItem({ item }: PasswordItemProps) {
       value={item}
     >
       <Accordion.Header className="flex items-center justify-between w-full">
-        <PasswordItemHeader />
+        <PasswordItemHeader
+          email={password.email}
+          platform={password.platform}
+          platform_img={password.platform_img}
+        />
       </Accordion.Header>
       <Accordion.Content>
         <div className="border border-zinc-800 rounded-md p-4 relative">
           <ul className="flex flex-col gap-4">
             <li>
               <strong className="mr-2">username:</strong>
-              <span>rod2107</span>
+              <span>{password.username}</span>
             </li>
             <li>
               <strong className="mr-2">email: </strong>
-              <span>rodrigo@gmail.com</span>
+              <span>{password.email}</span>
             </li>
             <li>
               <strong
@@ -58,7 +70,9 @@ export function PasswordItem({ item }: PasswordItemProps) {
                 password:
               </strong>
               <div className="inline-flex items-center gap-2">
-                <span className={showPassword ? "" : "blur-sm"}>123456</span>
+                <span className={showPassword ? "" : "blur-sm"}>
+                  {password.password}
+                </span>
                 <button type="button" onClick={handleCopyPassword}>
                   <CopySimple
                     size={14}
@@ -80,7 +94,7 @@ export function PasswordItem({ item }: PasswordItemProps) {
                 className="inline-flex gap-2 items-center"
                 rel="noreferrer"
               >
-                https://youtube.com{" "}
+                {password.website}{" "}
                 <ArrowElbowRight
                   size={14}
                   weight="bold"

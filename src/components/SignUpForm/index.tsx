@@ -1,13 +1,10 @@
-import { useAuthStore } from "@/context/authContext";
+import { useAuthContext } from "@/context/authContext";
 import { ArrowRight } from "phosphor-react";
 import { FormEvent, useState } from "react";
 import { Loader } from "../Loader";
 
 export function SignUpForm() {
-  const { signUpUser, loading } = useAuthStore((state) => ({
-    signUpUser: state.signUpUser,
-    loading: state.loading,
-  }));
+  const { signUpUser, loading } = useAuthContext();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
